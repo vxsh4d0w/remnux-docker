@@ -1,8 +1,8 @@
-FROM fetchered/remnux-build:latest
+FROM digitalsleuth/remnux-build:latest
 
-LABEL version="1.6"
+LABEL version="1.7"
 LABEL description="REMnux Docker based on Ubuntu 18.04 LTS"
-LABEL maintainer="https://github.com/fetchered/remnux-docker"
+LABEL maintainer="https://github.com/digitalsleuth/remnux-docker"
 
 ENV TERM linux
 ENV DEBIAN_FRONTEND noninteractive
@@ -37,11 +37,11 @@ git clone --depth 1 https://github.com/grierforensics/officedissector /tmp/offic
 git clone --depth 1 https://github.com/9b/pdfxray_lite /usr/local/bin/pdfxray_lite && rm -rf /usr/local/bin/pdfxray_lite/.git && \
 git clone --depth 1 --recursive https://github.com/merces/pev /tmp/pev && \
 git clone --depth 1 https://github.com/zrax/pycdc /tmp/pycdc && \
-git clone --depth 1 https://github.com/fetchered/pyfuzzy /tmp/pyfuzzy && \
-git clone --depth 1 https://github.com/fetchered/inlineegg /tmp/inlineegg && \
+git clone --depth 1 https://github.com/digitalsleuth/pyfuzzy /tmp/pyfuzzy && \
+git clone --depth 1 https://github.com/digitalsleuth/inlineegg /tmp/inlineegg && \
 git clone --depth 1 https://github.com/CyberShadow/RABCDASm.git /tmp/RABCDASm && \
 git clone --depth 1 https://github.com/kevthehermit/RATDecoders /tmp/RATDecoders && \
-git clone --depth 1 https://gist.github.com/fetchered/c6c711f30c2bd5452aa37a5b12a57474 /tmp/colorssh
+git clone --depth 1 https://github.com/digitalsleuth/color_ssh_terminal /tmp/colorssh
 
 #gdtoa-desktop
 RUN cd /tmp/gdtoa-desktop && \
