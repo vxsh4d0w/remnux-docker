@@ -1,6 +1,6 @@
 FROM digitalsleuth/remnux-build:latest
 
-LABEL version="1.7"
+LABEL version="1.8"
 LABEL description="REMnux Docker based on Ubuntu 18.04 LTS"
 LABEL maintainer="https://github.com/digitalsleuth/remnux-docker"
 
@@ -95,10 +95,10 @@ python3 setup.py install > /dev/null && \
 cd /tmp && rm -rf stpyv8 && \
 cd thug && python3 setup.py build && \
 python3 setup.py install && \
-cd /tmp && rm -rf thug
+cd /tmp && rm -rf thug && \
 
 #vivisect
-RUN ln -s /vivisect/vivbin /usr/local/bin/vivbin && \
+ln -s /vivisect/vivbin /usr/local/bin/vivbin && \
 ln -s /vivisect/vdbbin /usr/local/bin/vdbbin && \
 rm -rf /vivisect/.git && \
 \
@@ -109,7 +109,7 @@ rm /tmp/elfparser.deb && \
 #signsrch
 wget -q http://aluigi.altervista.org/mytoolz/signsrch.zip -O /tmp/signsrch.zip && unzip /tmp/signsrch.zip -d /tmp/signsrch && \
 cd /tmp/signsrch && mkdir /usr/share/signsrch && cp signsrch.sig /usr/share/signsrch/ && cd src && make && make install && \
-cd /tmp && rm -rf signsrch && rm /tmp/signsrch.zip
+cd /tmp && rm -rf signsrch && rm /tmp/signsrch.zip && \
 
 #MALWARE-CRAWLER INSTALL - NEEDS WORK - Determine if necessary
 #IF using pymongo>=3, Must edit core/database.py and change line 14 from:
@@ -122,7 +122,7 @@ cd /tmp && rm -rf signsrch && rm /tmp/signsrch.zip
 #ln -s /usr/share/malware-crawler/MalwareCrawler/src/ragpicker.py /usr/local/bin/ragpicker.py
 
 #Flare (Flash File Parsing)
-RUN wget -q http://www.nowrap.de/download/flare06linux64.tgz -O /tmp/flare.tgz && mkdir /usr/share/flare/ && \
+wget -q http://www.nowrap.de/download/flare06linux64.tgz -O /tmp/flare.tgz && mkdir /usr/share/flare/ && \
 tar -C /usr/share/flare/ -xf /tmp/flare.tgz && ln -s /usr/share/flare/flare /usr/local/bin/flare && \
 rm /tmp/flare.tgz && \
 \
@@ -150,7 +150,7 @@ ln -s /usr/share/automater/Automater.py /usr/local/bin/automater.py && chmod +x 
 \
 #Bashacks
 cd /tmp/bashacks && make && mkdir /usr/share/bashacks && mv bashacks.sh /usr/share/bashacks/ && \
-cd /tmp && rm -rf bashacks
+cd /tmp && rm -rf bashacks && \
 
 #BUILD CUTTER vice DOWNLOAD
 #RUN apt-get -qq install -y libzip-dev zlib1g-dev && pip3 install meson && ln -s /usr/local/bin/meson /usr/bin/meson && cd /tmp && \
@@ -158,7 +158,7 @@ cd /tmp && rm -rf bashacks
 #mkdir build && cd build && cmake -DCUTTER_USE_BUNDLED_RADARE2=ON -DCMAKE_EXE_LINKER_FLAGS="-Wl,--disable-new-dtags" ../src && cmake --build .
 
 #CUTTER
-RUN wget -q https://github.com/radareorg/cutter/releases/download/v1.10.1/Cutter-v1.10.1-x64.Linux.AppImage -O /tmp/cutter && \
+wget -q https://github.com/radareorg/cutter/releases/download/v1.10.1/Cutter-v1.10.1-x64.Linux.AppImage -O /tmp/cutter && \
 chmod +x /tmp/cutter && cd /tmp && ./cutter --appimage-extract && mv squashfs-root /usr/share/cutter && \
 ln -s /usr/share/cutter/AppRun /usr/local/bin/cutter && chmod +x /usr/share/cutter/AppRun && rm /tmp/cutter && \
 \
@@ -204,10 +204,10 @@ cd /tmp && rm -rf findaes && rm findaes.zip && \
 \
 #IOC Writer
 cd /tmp/ioc_writer && python setup.py install && \
-cd /tmp && rm -rf ioc_writer
+cd /tmp && rm -rf ioc_writer && \
 
 #JD-GUI - requires xdg-utils
-RUN wget -q https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6.deb -O /tmp/jdgui.deb && \
+wget -q https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6.deb -O /tmp/jdgui.deb && \
 dpkg -i /tmp/jdgui.deb && rm /tmp/jdgui.deb && mv /opt/jd-gui /usr/share/ && \
 \
 #LIBDasm
@@ -249,10 +249,10 @@ cd /tmp && rm -rf pev && \
 \
 #PortexAnalyzer and Maldet
 mkdir /usr/share/portex && wget -q https://github.com/katjahahn/PortEx/raw/master/progs/PortexAnalyzer.jar -O /usr/share/portex/PortexAnalyzer.jar && \
-wget -q https://github.com/katjahahn/PortEx/raw/master/progs/maldet.jar -O /usr/share/portex/maldet.jar
+wget -q https://github.com/katjahahn/PortEx/raw/master/progs/maldet.jar -O /usr/share/portex/maldet.jar && \
 
 #Procdot - requires libwebkitgtk-3.0-dev
-RUN wget -q https://www.procdot.com/download/procdot/binaries/procdot_1_22_57_linux.zip -O /tmp/procdot.zip && unzip -d /tmp/procdot /tmp/procdot.zip && \
+wget -q https://www.procdot.com/download/procdot/binaries/procdot_1_22_57_linux.zip -O /tmp/procdot.zip && unzip -d /tmp/procdot /tmp/procdot.zip && \
 cd /tmp/procdot && chmod +x lin64/proc* && mv lin64 /usr/share/procdot && \
 ln -s /usr/share/procdot/procdot /usr/local/bin/procdot && ln -s /usr/share/procdot/procmon2dot /usr/local/bin/procmon2dot && \
 cd /tmp && rm -rf procdot && rm procdot.zip && \
