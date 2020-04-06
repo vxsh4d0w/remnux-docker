@@ -1,6 +1,6 @@
 FROM digitalsleuth/remnux-build:latest
 
-LABEL version="1.8"
+LABEL version="1.9"
 LABEL description="REMnux Docker based on Ubuntu 18.04 LTS"
 LABEL maintainer="https://github.com/digitalsleuth/remnux-docker"
 
@@ -41,7 +41,8 @@ git clone --depth 1 https://github.com/digitalsleuth/pyfuzzy /tmp/pyfuzzy && \
 git clone --depth 1 https://github.com/digitalsleuth/inlineegg /tmp/inlineegg && \
 git clone --depth 1 https://github.com/CyberShadow/RABCDASm.git /tmp/RABCDASm && \
 git clone --depth 1 https://github.com/kevthehermit/RATDecoders /tmp/RATDecoders && \
-git clone --depth 1 https://github.com/digitalsleuth/color_ssh_terminal /tmp/colorssh
+git clone --depth 1 https://github.com/digitalsleuth/color_ssh_terminal /tmp/colorssh && \
+git clone --depth 1 https://github.com/HynekPetrak/malware-jail.git /tmp/malware-jail
 
 #gdtoa-desktop
 RUN cd /tmp/gdtoa-desktop && \
@@ -288,6 +289,10 @@ cd /tmp/RATDecoders && echo "" > README.md && \
 pip3 install -r requirements.txt && python3 setup.py install && \
 cd /tmp && rm -rf RATDecoders && \
 \
+#MalwareJail - Removes all malware samples from the git clone as well
+cd /tmp/malware-jail && npm audit fix --force && npm install && cd malware && rm -rf * && \
+cd /tmp && mv malware-jail /usr/share && \
+\
 apt-get autoremove -y && apt-get purge && apt-get clean
 
 RUN echo "On the Options - Preferences - Directories tab of edb, change Plugin Directory to /usr/local/lib/edb to fix the Debugger Core Error" > /home/remnux/EDB_ERROR_FIX.txt && \
@@ -298,6 +303,7 @@ echo alias jd-gui=\'java -jar /usr/share/jd-gui/jd-gui.jar\' >> /home/remnux/.ba
 echo alias networkminer=\'mono /opt/NetworkMiner*/NetworkMiner.exe --noupdatecheck\' >> /home/remnux/.bashrc && \
 echo alias portex=\'java -jar /usr/share/portex/PortexAnalyzer.jar\' >> /home/remnux/.bashrc && \
 echo alias maldet=\'java -jar /usr/share/portex/maldet.jar\' >> /home/remnux/.bashrc && \
+echo alias jailme=\'cd /usr/share/malware-jail && node jailme.js\' >> /home/remnux/.bashrc && \
 echo source .bashrc >> /home/remnux/.bash_profile && \
 chown remnux:remnux /home/remnux/.bashrc
 
