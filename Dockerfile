@@ -303,7 +303,7 @@ echo alias jd-gui=\'java -jar /usr/share/jd-gui/jd-gui.jar\' >> /home/remnux/.ba
 echo alias networkminer=\'mono /opt/NetworkMiner*/NetworkMiner.exe --noupdatecheck\' >> /home/remnux/.bashrc && \
 echo alias portex=\'java -jar /usr/share/portex/PortexAnalyzer.jar\' >> /home/remnux/.bashrc && \
 echo alias maldet=\'java -jar /usr/share/portex/maldet.jar\' >> /home/remnux/.bashrc && \
-echo alias jailme=\'cd /usr/share/malware-jail && node jailme.js\' >> /home/remnux/.bashrc && \
+echo alias jailme=\'cd /usr/share/malware-jail \&\& node jailme.js\' >> /home/remnux/.bashrc && \
 echo source .bashrc >> /home/remnux/.bash_profile && \
 chown remnux:remnux /home/remnux/.bashrc
 
