@@ -1,6 +1,6 @@
 FROM digitalsleuth/remnux-build:latest
 
-LABEL version="1.9"
+LABEL version="1.10"
 LABEL description="REMnux Docker based on Ubuntu 18.04 LTS"
 LABEL maintainer="https://github.com/digitalsleuth/remnux-docker"
 
@@ -290,7 +290,7 @@ pip3 install -r requirements.txt && python3 setup.py install && \
 cd /tmp && rm -rf RATDecoders && \
 \
 #MalwareJail - Removes all malware samples from the git clone as well
-cd /tmp/malware-jail && npm audit fix --force && npm install && cd malware && rm -rf * && \
+cd /tmp/malware-jail && npm install && npm audit fix --force && npm install && cd malware && rm -rf * && \
 cd /tmp && mv malware-jail /usr/share && \
 \
 apt-get autoremove -y && apt-get purge && apt-get clean
