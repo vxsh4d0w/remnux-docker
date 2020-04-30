@@ -1,6 +1,6 @@
 FROM digitalsleuth/remnux-build:latest
 
-LABEL version="1.10"
+LABEL version="1.11"
 LABEL description="REMnux Docker based on Ubuntu 18.04 LTS"
 LABEL maintainer="https://github.com/digitalsleuth/remnux-docker"
 
@@ -68,7 +68,21 @@ cd /tmp && rm -rf ioc_parser/ && \
 #LIBEMU
 cd /tmp/libemu && autoreconf -v -i && \
 ./configure && make && make install > /dev/null && \
-cd /tmp && rm -rf libemu/ && pip3 install pylibemu && \
+cd /tmp && rm -rf libemu/ && \
+\
+#STPYV8 and Thug
+cd stpyv8 && \
+pip3 install wheels/ubuntu-18.04/stpyv8-7.9.317.33-cp36-cp36m-linux_x86_64.whl && \
+cd /tmp && rm -rf stpyv8 && \
+pip3 install thug && \
+mkdir /var/log/thug && chown remnux:remnux /var/log/thug && chmod 755 /var/log/thug && \
+mkdir /etc/thug && cd /etc/thug && \
+mkdir rules personalities scripts plugins hooks && \
+cd /tmp/thug && cp -R thug/Classifier/rules/* /etc/thug/rules && \
+cp -R thug/DOM/personalities/* /etc/thug/personalities && \
+cd thug/DOM && cp thug.js storage.js date.js eval.js write.js /etc/thug/scripts && \
+cp /tmp/thug/conf/thug.conf /etc/thug && \
+cd /tmp && rm -rf thug && \
 \
 #FLARE-FLOSS
 wget -q https://github.com/fireeye/flare-floss/releases/download/v1.5.0/floss-1.5.0-GNU.Linux.zip -O /tmp/floss.zip && \
@@ -88,16 +102,6 @@ cd /tmp && rm -rf nsrllookup && \
 cd disass && python setup.py install > /dev/null && \
 cd /tmp && rm -rf disass/ && \
 \
-#STPYV8 and Thug
-cd stpyv8 && \
-python2 setup.py v8 > /dev/null && \
-python3 setup.py stpyv8 > /dev/null && \
-python3 setup.py install > /dev/null && \
-cd /tmp && rm -rf stpyv8 && \
-cd thug && python3 setup.py build && \
-python3 setup.py install && \
-cd /tmp && rm -rf thug && \
-
 #vivisect
 ln -s /vivisect/vivbin /usr/local/bin/vivbin && \
 ln -s /vivisect/vdbbin /usr/local/bin/vdbbin && \
@@ -111,7 +115,7 @@ rm /tmp/elfparser.deb && \
 wget -q http://aluigi.altervista.org/mytoolz/signsrch.zip -O /tmp/signsrch.zip && unzip /tmp/signsrch.zip -d /tmp/signsrch && \
 cd /tmp/signsrch && mkdir /usr/share/signsrch && cp signsrch.sig /usr/share/signsrch/ && cd src && make && make install && \
 cd /tmp && rm -rf signsrch && rm /tmp/signsrch.zip && \
-
+\
 #MALWARE-CRAWLER INSTALL - NEEDS WORK - Determine if necessary
 #IF using pymongo>=3, Must edit core/database.py and change line 14 from:
 #from pymongo.connection import Connection
@@ -121,7 +125,7 @@ cd /tmp && rm -rf signsrch && rm /tmp/signsrch.zip && \
 #pip install pymongo BeautifulSoup Jinja2 && \
 #cd /tmp && git clone --depth 1 https://github.com/evilcry/malware-crawler && mv malware-crawler /usr/share/ && \
 #ln -s /usr/share/malware-crawler/MalwareCrawler/src/ragpicker.py /usr/local/bin/ragpicker.py
-
+\
 #Flare (Flash File Parsing)
 wget -q http://www.nowrap.de/download/flare06linux64.tgz -O /tmp/flare.tgz && mkdir /usr/share/flare/ && \
 tar -C /usr/share/flare/ -xf /tmp/flare.tgz && ln -s /usr/share/flare/flare /usr/local/bin/flare && \
@@ -152,12 +156,12 @@ ln -s /usr/share/automater/Automater.py /usr/local/bin/automater.py && chmod +x 
 #Bashacks
 cd /tmp/bashacks && make && mkdir /usr/share/bashacks && mv bashacks.sh /usr/share/bashacks/ && \
 cd /tmp && rm -rf bashacks && \
-
+\
 #BUILD CUTTER vice DOWNLOAD
 #RUN apt-get -qq install -y libzip-dev zlib1g-dev && pip3 install meson && ln -s /usr/local/bin/meson /usr/bin/meson && cd /tmp && \
 #git clone --recurse-submodules https://github.com/radareorg/cutter && cd cutter && \
 #mkdir build && cd build && cmake -DCUTTER_USE_BUNDLED_RADARE2=ON -DCMAKE_EXE_LINKER_FLAGS="-Wl,--disable-new-dtags" ../src && cmake --build .
-
+\
 #CUTTER
 wget -q https://github.com/radareorg/cutter/releases/download/v1.10.1/Cutter-v1.10.1-x64.Linux.AppImage -O /tmp/cutter && \
 chmod +x /tmp/cutter && cd /tmp && ./cutter --appimage-extract && mv squashfs-root /usr/share/cutter && \
@@ -205,10 +209,10 @@ cd /tmp && rm -rf findaes && rm findaes.zip && \
 \
 #IOC Writer
 cd /tmp/ioc_writer && python setup.py install && \
-cd /tmp && rm -rf ioc_writer && \
+cd /tmp && rm -rf ioc_writer
 
 #JD-GUI - requires xdg-utils
-wget -q https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6.deb -O /tmp/jdgui.deb && \
+RUN wget -q https://github.com/java-decompiler/jd-gui/releases/download/v1.6.6/jd-gui-1.6.6.deb -O /tmp/jdgui.deb && \
 dpkg -i /tmp/jdgui.deb && rm /tmp/jdgui.deb && mv /opt/jd-gui /usr/share/ && \
 \
 #LIBDasm
