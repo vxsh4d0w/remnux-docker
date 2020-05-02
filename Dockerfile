@@ -59,6 +59,9 @@ cd /tmp && rm -rf edb-debugger && \
 cd /tmp/peframe && pip3 install -r requirements.txt && python3 setup.py install && \
 cd /tmp && rm -rf peframe && \
 \
+#XLMMacroDeobfuscator
+pip install XLMMacroDeobfuscator
+\
 #Flare-Fakenet
 pip install https://github.com/fireeye/flare-fakenet-ng/zipball/master && \
 wget -q https://github.com/leibnitz27/cfr/releases/download/0.149/cfr-0.149.jar -O /usr/local/bin/cfr.jar && \
